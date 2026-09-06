@@ -62,6 +62,40 @@ You can now directly upload this `app-release.aab` file to **Google Play Console
 
 ---
 
+## 🤖 Automated Signed .AAB Build via GitHub Actions
+
+A continuous integration workflow is configured in `.github/workflows/build-aab.yml`.
+
+### Step 1: Generate Release Keystore (if you don't already have one)
+Run in your terminal:
+```bash
+keytool -genkey -v -keystore release.keystore -alias geetaflow -keyalg RSA -keysize 2048 -validity 10000
+```
+
+### Step 2: Convert Keystore to Base64
+```bash
+# On Linux / macOS / Git Bash:
+base64 -w 0 release.keystore > keystore_base64.txt
+# (or on macOS: base64 -i release.keystore -o keystore_base64.txt)
+```
+
+### Step 3: Add Secrets to Your GitHub Repository
+1. In your GitHub repository, go to **Settings** ➔ **Secrets and variables** ➔ **Actions**.
+2. Click **New repository secret** and add the following:
+
+| Secret Name | Description |
+|---|---|
+| `ANDROID_KEYSTORE_BASE64` | The entire base64 string from `keystore_base64.txt` |
+| `KEYSTORE_PASSWORD` | Password created for the keystore file |
+| `KEY_ALIAS` | Key alias (e.g., `geetaflow`) |
+| `KEY_PASSWORD` | Key alias password |
+
+### Step 4: Run the Build
+- Push changes to `main`/`master` or go to **Actions** ➔ **Build & Sign Android App Bundle (AAB)** ➔ **Run workflow**.
+- When the job completes, download the **`app-release-signed-aab`** artifact zip containing your production-ready `.aab` for Google Play Console!
+
+---
+
 ## 💰 AdMob Placements Configured in Code
 
 | Ad Format | Placement | eCPM Range | How it triggers |
