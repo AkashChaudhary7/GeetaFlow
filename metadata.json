@@ -1,0 +1,8 @@
+{
+  "name": "GeetaFlow",
+  "description": "The Bhagavad Gita, one scroll at a time. A modern, peaceful, full-screen vertical swipe feed with authentic Sanskrit shlokas, Hindi meanings, life wisdom, and AI guidance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sanskrit: 'Martel', serif;
+    --font-hindi: 'Yantramanav', sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Cinzel', serif;
+  }
+
+  html, body {
+    font-family: var(--font-sans);
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    touch-action: pan-y;
+  }
+
+  button {
+    touch-action: manipulation;
+  }
+}
+
+.font-sanskrit {
+  font-family: var(--font-sanskrit);
+  letter-spacing: 0.02em;
+}
+
+.font-hindi {
+  font-family: var(--font-hindi);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Custom smooth vertical snapping */
+.snap-y-mandatory {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-start-card {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Hide scrollbars for clean full screen feed */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Subtle gold/amber glow */
+.sanskrit-glow {
+  text-shadow: 0 0 24px rgba(245, 158, 11, 0.18);
+}
