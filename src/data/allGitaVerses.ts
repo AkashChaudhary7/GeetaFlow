@@ -619,6 +619,35 @@ const CHAPTER_THEMATIC_SECTIONS: Record<number, ChapterSection[]> = {
   ]
 };
 
+const DEFAULT_CANONICAL_THEME = {
+  sanskritSamples: [
+    'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥',
+    'योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय।\nसिद्ध्यसिद्ध्योः समो भूत्वा समत्वं योग उच्यते॥',
+    'यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।\nअभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥',
+    'मन्मना भव मद्भक्तो मद्याजी मां नमस्कुरु।\nमामेवैष्यसि सत्यं ते प्रतिजाने प्रियोऽसि मे॥'
+  ],
+  transliterations: [
+    'karmaṇy evādhikāras te mā phaleṣu kadācana | mā karma-phala-hetur bhūr mā te saṅgo \'stv akarmaṇi ||',
+    'yoga-sthaḥ kuru karmāṇi saṅgaṁ tyaktvā dhanañjaya | siddhy-asiddhyoḥ samo bhūtvā samatvaṁ yoga ucyate ||',
+    'yadā yadā hi dharmasya glānir bhavati bhārata | abhyutthānam adharmasya tadātmānaṁ sṛjāmy aham ||',
+    'man-manā bhava mad-bhakto mad-yājī māṁ namaskuru | mām evaiṣyasi satyaṁ te pratijāne priyo \'si me ||'
+  ],
+  meanings: [
+    'तुम्हारा अधिकार केवल कर्म करने में है, उसके फलों में कभी नहीं। इसलिए कर्मफल के हेतु मत बनो और न ही कर्म न करने में तुम्हारी आसक्ति हो।',
+    'आसक्ति को त्यागकर तथा सिद्धि और असिद्धि में समभाव रखकर कर्म करो; यह समत्व ही योग कहलाता है।',
+    'जब-जब धर्म की हानि और अधर्म की वृद्धि होती है, तब-तब मैं धर्म की रक्षा हेतु स्वयं को प्रकट करता हूँ।',
+    'मुझमें मन लगाने वाले बनो, मेरे भक्त बनो, मेरी पूजा करो और मुझे प्रणाम करो; तुम मुझे ही प्राप्त होगे।'
+  ],
+  bhavarths: [
+    'कर्तव्य के मार्ग पर बिना फल की चिंता किए पूरी निष्ठा से काम करना ही सच्चा योग है।',
+    'समत्व और ईश्वरीय चेतना से किए गए कर्म सभी संशयों और दुखों का निवारण करते हैं।'
+  ],
+  takeaways: [
+    'कर्म को ही अपनी सर्वोच्च पूजा मानें और फल की आसक्ति से मुक्त होकर शांत मन से जिएं।'
+  ],
+  topics: ['कर्मयोग', 'समत्व', 'धर्म', 'शांति']
+};
+
 // Generic canonical templates across all other chapters to ensure EVERY single shloka has real, authentic Sanskrit & deep meaning
 const CANONICAL_CHAPTER_THEMES: Record<number, {
   sanskritSamples: string[];
@@ -628,6 +657,69 @@ const CANONICAL_CHAPTER_THEMES: Record<number, {
   takeaways: string[];
   topics: string[];
 }> = {
+  1: {
+    sanskritSamples: [
+      'धर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः।\nमामकाः पाण्डवाश्चैव किमकुर्वत सञ्जय॥',
+      'दृष्ट्वा तु पाण्डवानीकं व्यूढं दुर्योधनस्तदा।\nआचार्यमुपसङ्गम्य राजा वचनमब्रवीत्॥',
+      'सेनयोरुभयोर्मध्ये रथं स्थापय मेऽच्युत।\nयावदेतान्निरीक्षेऽहं योद्धुकामानवस्थितान्॥',
+      'सीदन्ति मम गात्राणि मुखं च परिशुष्यति।\nवेपथुश्च शरीरे मे रोमहर्षश्च जायते॥'
+    ],
+    transliterations: [
+      'dharma-kṣetre kuru-kṣetre samavetā yuyutsavaḥ | māmakāḥ pāṇḍavāś caiva kim akurvata sañjaya ||',
+      'dṛṣṭvā tu pāṇḍavānīkaṁ vyūḍhaṁ duryodhanas tadā | ācāryam upasaṅgamya rājā vacanam abravīt ||',
+      'senayor ubhayor madhye rathaṁ sthāpaya me \'cyuta | yāvad etān nirīkṣe \'haṁ yoddhu-kāmān avasthitān ||',
+      'sīdanti mama gātrāṇi mukhaṁ ca pariśuṣyati | vepathuś ca śarīre me roma-harṣaś ca jāyate ||'
+    ],
+    meanings: [
+      'धृतराष्ट्र ने पूछा: हे संजय! धर्मभूमि कुरुक्षेत्र में युद्ध की इच्छा से एकत्र मेरे और पाण्डु के पुत्रों ने क्या किया?',
+      'संजय बोले: उस समय राजा दुर्योधन ने व्यूहरचनायुक्त पाण्डव सेना को देखकर द्रोणाचार्य के पास जाकर वचन कहे।',
+      'अर्जुन ने कहा: हे अच्युत! मेरे रथ को दोनों सेनाओं के मध्य खड़ा कीजिए, ताकि मैं युद्ध के अभिलाषियों को देख सकूँ।',
+      'हे कृष्ण! युद्ध की इच्छा वाले इन स्वजनों को देखकर मेरे अंग शिथिल हो रहे हैं और मुख सूख रहा है।'
+    ],
+    bhavarths: [
+      'संसार एक धर्मक्षेत्र है जहां निरंतर सद्गुणों और दुर्गुणों के मध्य संघर्ष चलता रहता है।'
+    ],
+    takeaways: [
+      'जीवन की हर परीक्षा में धर्म और सत्य का ही पक्ष चुनें।'
+    ],
+    topics: ['धर्म', 'कुरुक्षेत्र', 'कर्तव्य']
+  },
+  2: {
+    sanskritSamples: [
+      'क्लैब्यं मा स्म गमः पार्थ नैतत्त्वय्युपपद्यते।\nक्षुद्रं हृदयदौर्बल्यं त्यक्त्वोत्तिष्ठ परन्तप॥',
+      'देहिनोऽस्मिन्यथा देहे कौमारं यौवनं जरा।\nतथा देहान्तरप्राप्तिर्धीरस्तत्र न मुह्यति॥',
+      'मात्रास्पर्शास्तु कौन्तेय शीतोष्णसुखदुःखदाः।\nआगमापायिनोऽनित्यास्तांस्तितिक्षस्व भारत॥',
+      'नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः।\nन चैनं क्लेदयन्त्यापो न शोषयति मारुतः॥',
+      'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥',
+      'योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय।\nसिद्ध्यसिद्ध्योः समो भूत्वा समत्वं योग उच्यते॥',
+      'प्रजहाति यदा कामान्सर्वान्पार्थ मनोगतान्।\nआत्मन्येवात्मना तुष्टः स्थितप्रज्ञस्तदोच्यते॥'
+    ],
+    transliterations: [
+      'klaibyaṁ mā sma gamaḥ pārtha naitat tvayy upapadyate | kṣudraṁ hṛdaya-daurbalyaṁ tyaktvottiṣṭha parantapa ||',
+      'dehino \'smin yathā dehe kaumāraṁ yauvanaṁ jarā | tathā dehāntara-prāptir dhīras tatra na muhyati ||',
+      'mātrā-sparśās tu kaunteya śītoṣṇa-sukha-duḥkha-dāḥ | āgamāpāyino \'nityās tāṁs titikṣasva bhārata ||',
+      'nainaṁ chindanti śastrāṇi nainaṁ dahati pāvakaḥ | na cainaṁ kledayanty āpo na śoṣayati mārutaḥ ||',
+      'karmaṇy evādhikāras te mā phaleṣu kadācana | mā karma-phala-hetur bhūr mā te saṅgo \'stv akarmaṇi ||',
+      'yoga-sthaḥ kuru karmāṇi saṅgaṁ tyaktvā dhanañjaya | siddhy-asiddhyoḥ samo bhūtvā samatvaṁ yoga ucyate ||',
+      'prajahāti yadā kāmān sarvān pārtha mano-gatān | ātmany evātmanā tuṣṭaḥ sthita-prajñas tadocyate ||'
+    ],
+    meanings: [
+      'हे पार्थ! नपुंसकता को मत प्राप्त हो, यह तुम्हारे योग्य नहीं है। हृदय की इस तुच्छ दुर्बलता को त्यागकर खड़े हो जाओ!',
+      'जैसे इस शरीर में जीवात्मा की बाल्यावस्था, युवावस्था और वृद्धावस्था होती है, वैसे ही अन्य शरीर की प्राप्ति होती है; ज्ञानी इसमें मोहित नहीं होते।',
+      'हे कौन्तेय! सर्दी-गर्मी और सुख-दुःख देने वाले इंद्रिय-विषय संयोग क्षणभंगुर हैं। हे भारत! उन्हें सहन करो।',
+      'इस आत्मा को शस्त्र काट नहीं सकते, अग्नि जला नहीं सकती, जल गला नहीं सकता और वायु सुखा नहीं सकती।',
+      'तुम्हारा अधिकार केवल कर्म करने में है, उसके फलों में कभी नहीं। कर्मफल के हेतु मत बनो और न ही अकर्म में तुम्हारी आसक्ति हो।',
+      'आसक्ति को त्यागकर तथा सिद्धि और असिद्धि में समभाव रखकर कर्म करो; यह समत्व ही योग कहलाता है।',
+      'जब मनुष्य मन में स्थित समस्त कामनाओं को पूर्णतः त्याग देता है और आत्मा से आत्मा में ही संतुष्ट रहता है, तब वह स्थितप्रज्ञ कहा जाता है।'
+    ],
+    bhavarths: [
+      'आत्मा अमर है और शरीर नश्वर। समत्व और निष्काम कर्म ही जीवन में सच्चा मार्ग दिखाते हैं।'
+    ],
+    takeaways: [
+      'फल की चिंता किए बिना समभाव से अपने कर्तव्य का पालन करें।'
+    ],
+    topics: ['सांख्य', 'आत्मज्ञान', 'कर्मयोग', 'स्थितप्रज्ञ']
+  },
   3: {
     sanskritSamples: [
       'यज्ञार्थात्कर्मणोऽन्यत्र लोकोऽयं कर्मबन्धनः।\nतदर्थं कर्म कौन्तेय मुक्तसङ्गः समाचर॥',
@@ -1177,13 +1269,20 @@ export function getGitaShloka(chapterNum: number, verseNum: number): Shloka {
   }
 
   // Check generic canonical chapter themes
-  const theme = CANONICAL_CHAPTER_THEMES[chapterNum] || CANONICAL_CHAPTER_THEMES[2];
-  const idx = (safeVerse - 1) % theme.sanskritSamples.length;
-  const sanskrit = theme.sanskritSamples[idx];
-  const transliteration = theme.transliterations[idx];
-  const simpleHindi = theme.meanings[idx];
-  const bhavarth = theme.bhavarths[idx % theme.bhavarths.length];
-  const aajKiSeekh = theme.takeaways[idx % theme.takeaways.length];
+  const theme = CANONICAL_CHAPTER_THEMES[chapterNum] || CANONICAL_CHAPTER_THEMES[2] || CANONICAL_CHAPTER_THEMES[3] || DEFAULT_CANONICAL_THEME;
+  const sanskritSamples = theme.sanskritSamples && theme.sanskritSamples.length > 0 ? theme.sanskritSamples : DEFAULT_CANONICAL_THEME.sanskritSamples;
+  const transliterations = theme.transliterations && theme.transliterations.length > 0 ? theme.transliterations : DEFAULT_CANONICAL_THEME.transliterations;
+  const meanings = theme.meanings && theme.meanings.length > 0 ? theme.meanings : DEFAULT_CANONICAL_THEME.meanings;
+  const bhavarths = theme.bhavarths && theme.bhavarths.length > 0 ? theme.bhavarths : DEFAULT_CANONICAL_THEME.bhavarths;
+  const takeaways = theme.takeaways && theme.takeaways.length > 0 ? theme.takeaways : DEFAULT_CANONICAL_THEME.takeaways;
+  const topics = theme.topics && theme.topics.length > 0 ? theme.topics : DEFAULT_CANONICAL_THEME.topics;
+
+  const idx = (safeVerse - 1) % sanskritSamples.length;
+  const sanskrit = sanskritSamples[idx] || DEFAULT_CANONICAL_THEME.sanskritSamples[0];
+  const transliteration = transliterations[idx] || transliterations[0] || DEFAULT_CANONICAL_THEME.transliterations[0];
+  const simpleHindi = meanings[idx] || meanings[0] || DEFAULT_CANONICAL_THEME.meanings[0];
+  const bhavarth = bhavarths[idx % bhavarths.length] || DEFAULT_CANONICAL_THEME.bhavarths[0];
+  const aajKiSeekh = takeaways[idx % takeaways.length] || DEFAULT_CANONICAL_THEME.takeaways[0];
 
   const shloka: Shloka = {
     id: `bg_${chapterNum}_${safeVerse}`,
@@ -1196,7 +1295,7 @@ export function getGitaShloka(chapterNum: number, verseNum: number): Shloka {
     simpleHindi,
     bhavarth,
     aajKiSeekh,
-    topics: theme.topics,
+    topics,
     moods: ['शांति', 'कर्म', 'ज्ञान'],
     illustration: CHAPTER_ILLUSTRATION_MAP[chapterNum] || 'chariot_krishna_arjuna',
     audioPronunciationText: sanskrit

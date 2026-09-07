@@ -108,6 +108,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', app: 'GeetaFlow', version: '1.0.0' });
 });
 
+// Privacy Policy page
+app.get('/privacy', (req, res) => {
+  const privacyPath = path.join(process.cwd(), 'public', 'privacy.html');
+  if (fs.existsSync(privacyPath)) {
+    res.sendFile(privacyPath);
+  } else {
+    res.redirect('https://geetaflow.ictlabgsssaidana.workers.dev/privacy');
+  }
+});
+
 // API: Convert canvas recording to YouTube Shorts & Instagram Reels Certified MP4
 app.post('/api/convert-to-mp4', async (req, res) => {
   let inputPath = '';

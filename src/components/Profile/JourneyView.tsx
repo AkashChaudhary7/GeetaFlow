@@ -64,15 +64,22 @@ export const JourneyView: React.FC<JourneyViewProps> = ({
 
   // Chronological Reading History
   const historyList = (preferences.readHistory || []).map(item => {
-    const parts = item.shlokaId.split('_');
-    const ch = parseInt(parts[1] || '2', 10);
-    const v = parseInt(parts[2] || '47', 10);
-    const shloka = getGitaShloka(ch, v);
+    if (!item || !item.shlokaId) return null;
+    const existing = SHLOKAS_DATA.find(s => s.id === item.shlokaId);
+    let shloka: Shloka;
+    if (existing) {
+      shloka = existing;
+    } else {
+      const parts = item.shlokaId.split('_');
+      const ch = parseInt(parts[1] || '2', 10);
+      const v = parseInt(parts[2] || '47', 10);
+      shloka = getGitaShloka(isNaN(ch) ? 2 : ch, isNaN(v) ? 47 : v);
+    }
     return {
       ...item,
       shloka
     };
-  });
+  }).filter((item): item is { shlokaId: string; timestamp: number; shloka: Shloka } => Boolean(item && item.shloka));
 
   const formatTimeAgo = (timestamp: number) => {
     const diffMs = Date.now() - timestamp;
@@ -491,23 +498,23 @@ export const JourneyView: React.FC<JourneyViewProps> = ({
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-hindi ${
                       isLight ? 'bg-amber-100 text-amber-950' : 'bg-amber-500/15 text-amber-300'
                     }`}>
-                      अध्याय {item.shloka.chapter} • श्लोक {item.shloka.verse}
+                      अध्याय {item.shloka?.chapter || 2} • श्लोक {item.shloka?.verse || 1}
                     </span>
                     <span className={`text-[10px] font-hindi truncate ${
                       isLight ? 'text-amber-800/70' : 'text-neutral-400'
                     }`}>
-                      {item.shloka.chapterNameHindi}
+                      {item.shloka?.chapterNameHindi || 'श्रीमद्भगवद्गीता'}
                     </span>
                   </div>
                   <p className={`font-sanskrit text-xs font-bold truncate ${
                     isLight ? 'text-amber-800' : 'text-amber-200'
                   }`}>
-                    {item.shloka.sanskrit.split('\n')[0]}
+                    {item.shloka?.sanskrit ? item.shloka.sanskrit.split('\n')[0] : ''}
                   </p>
                   <p className={`text-[11px] font-hindi line-clamp-1 ${
                     isLight ? 'text-amber-950/80 font-medium' : 'text-neutral-300'
                   }`}>
-                    {item.shloka.simpleHindi}
+                    {item.shloka?.simpleHindi || ''}
                   </p>
                 </div>
 

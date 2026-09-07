@@ -13,7 +13,8 @@ import {
   ArrowLeft,
   BookOpen,
   Smartphone,
-  Sparkles
+  Sparkles,
+  ExternalLink
 } from 'lucide-react';
 import { AppLogo } from '../Common/AppLogo';
 import { triggerHaptic } from '../../utils/haptics';
@@ -105,16 +106,42 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
       <div className="p-4 sm:p-6 flex-1 overflow-y-auto space-y-6 max-w-2xl mx-auto w-full no-scrollbar text-neutral-200 font-sans">
         
         {/* Brand Trust Banner */}
-        <div className="p-4 rounded-3xl bg-gradient-to-br from-amber-500/10 via-neutral-900 to-neutral-900 border border-amber-500/30 flex items-center space-x-4">
-          <AppLogo size="lg" />
-          <div>
-            <h3 className="font-display font-black text-amber-300 text-base">GEETAFLOW</h3>
-            <p className="text-xs text-neutral-300 font-hindi mt-0.5">
-              श्रीमद्भगवद्गीता ज्ञान व पवित्र स्वाध्याय ऐप
-            </p>
-            <p className="text-[10px] text-amber-400/80 mt-1">
-              Google Play Store Compliant • Last Updated: March 2026 • v1.0.0
-            </p>
+        <div className="p-4 rounded-3xl bg-gradient-to-br from-amber-500/10 via-neutral-900 to-neutral-900 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center space-x-3">
+            <AppLogo size="lg" />
+            <div>
+              <h3 className="font-display font-black text-amber-300 text-base">GEETAFLOW</h3>
+              <p className="text-xs text-neutral-300 font-hindi mt-0.5">
+                श्रीमद्भगवद्गीता ज्ञान व पवित्र स्वाध्याय ऐप
+              </p>
+              <p className="text-[10px] text-amber-400/80 mt-1">
+                Google Play Store Compliant • Last Updated: March 2026 • v1.0.0
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://geetaflow.ictlabgsssaidana.workers.dev/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="self-start sm:self-center px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 hover:text-amber-100 text-xs font-semibold flex items-center space-x-1.5 transition-all shadow-xs"
+          >
+            <span>Live Privacy Policy</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        {/* Official URL Verification Card */}
+        <div className="p-3 rounded-2xl bg-neutral-900/90 border border-neutral-800 text-xs flex items-center justify-between gap-2">
+          <div className="space-y-0.5">
+            <span className="text-[11px] text-neutral-400 font-hindi block">आधिकारिक लाइव प्राइवेसी लिंक (Official URL):</span>
+            <a 
+              href="https://geetaflow.ictlabgsssaidana.workers.dev/privacy" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-amber-400 hover:text-amber-300 underline font-mono text-[11px] break-all flex items-center gap-1"
+            >
+              https://geetaflow.ictlabgsssaidana.workers.dev/privacy
+            </a>
           </div>
         </div>
 
@@ -228,9 +255,15 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
               <p className="text-neutral-300 font-hindi">
                 यदि आपके पास इस गोपनीयता नीति या ऐप के संबंध में कोई प्रश्न अथवा सुझाव है, तो आप सीधे संपर्क कर सकते हैं:
               </p>
-              <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800 text-xs space-y-1">
-                <div className="text-amber-300 font-medium">ईमेल: mobographie@gmail.com / support@geetaflow.app</div>
+              <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800 text-xs space-y-1.5">
+                <div className="text-amber-300 font-medium">ईमेल: <a href="mailto:ictlabgsssaidana@gmail.com" className="underline">ictlabgsssaidana@gmail.com</a> / <a href="mailto:mobographie@gmail.com" className="underline">mobographie@gmail.com</a></div>
                 <div className="text-neutral-400">डेवलपर: GeetaFlow Team • Bharat</div>
+                <div className="pt-1 text-[11px] text-amber-400/90 flex items-center gap-1">
+                  <span>लाइव गोपनीयता नीति वेब पेज:</span>
+                  <a href="https://geetaflow.ictlabgsssaidana.workers.dev/privacy" target="_blank" rel="noopener noreferrer" className="underline font-mono text-amber-300">
+                    geetaflow.ictlabgsssaidana.workers.dev/privacy
+                  </a>
+                </div>
               </div>
             </section>
 

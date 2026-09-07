@@ -566,9 +566,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Privacy Policy & Terms of Service */}
           <div className="pt-2 border-t border-neutral-800 space-y-2">
-            <span className="text-xs font-semibold text-neutral-400 font-hindi block">
-              कानूनी व सुरक्षा नीतियां (Legal & Privacy)
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-neutral-400 font-hindi block">
+                कानूनी व सुरक्षा नीतियां (Legal & Privacy)
+              </span>
+              <a
+                href="https://geetaflow.ictlabgsssaidana.workers.dev/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-amber-400 hover:text-amber-300 underline font-mono flex items-center gap-1"
+              >
+                <span>Live URL</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => {

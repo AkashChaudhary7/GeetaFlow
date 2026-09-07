@@ -26,6 +26,8 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [isShareSupported, setIsShareSupported] = useState(false);
   const [cardTheme, setCardTheme] = useState<CardTheme>(isLight ? 'ivory' : 'celestial');
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [userName, setUserName] = useState(preferences?.userName || '');
@@ -34,6 +36,10 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
 
   const cardRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    setIsShareSupported(typeof navigator !== 'undefined' && typeof navigator.share === 'function');
+  }, []);
 
   useEffect(() => {
     if (preferences?.userName) setUserName(preferences.userName);
@@ -350,42 +356,77 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
   };
 
   /**
-   * Shares image along with link & shloka text via Web Share API
+   * Primary Web Share API handler: launches the native system share dialog with image & rich shloka text
    */
-  const handleShareImageAndLink = async () => {
+  const handleShareSystemDialog = async () => {
     triggerHaptic('medium');
-    setIsGeneratingImage(true);
-    try {
-      const blob = await generateCardBlob();
-      if (blob && navigator.canShare) {
-        const file = new File(
-          [blob], 
-          `GeetaFlow_Chapter_${shloka.chapter}_Verse_${shloka.verse}.png`, 
-          { type: 'image/png' }
-        );
+    setIsSharing(true);
 
-        if (navigator.canShare({ files: [file] })) {
+    try {
+      const shareText = getShareText();
+      const shareTitle = `श्रीमद्भगवद्गीता • अध्याय ${shloka.chapter} श्लोक ${shloka.verse}`;
+      const shareUrl = window.location.href;
+
+      // 1. Generate high-resolution card image blob
+      let file: File | null = null;
+      try {
+        const blob = await generateCardBlob();
+        if (blob) {
+          file = new File(
+            [blob], 
+            `GeetaFlow_Chapter_${shloka.chapter}_Verse_${shloka.verse}.png`, 
+            { type: 'image/png' }
+          );
+        }
+      } catch (blobErr) {
+        console.warn('Canvas blob generation failed, continuing with text share:', blobErr);
+      }
+
+      // 2. Invoke native Web Share API
+      if (typeof navigator !== 'undefined' && navigator.share) {
+        // Test if rich file sharing is supported on this device/browser
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
             files: [file],
-            title: `श्रीमद्भगवद्गीता • अध्याय ${shloka.chapter} श्लोक ${shloka.verse}`,
-            text: getShareText(),
-            url: window.location.href,
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl,
           });
           triggerHaptic('success');
           return;
         }
+
+        // Fallback to native text & URL share if file attachment is unsupported
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+        triggerHaptic('success');
+        return;
       }
 
-      // Fallback: if native file sharing is not supported, download image and copy link
+      // 3. Fallback when navigator.share is completely unavailable
       await handleDownloadImage();
       await handleCopy();
-      alert('कार्ड इमेज डाउनलोड कर दी गई है और लिंक कॉपी हो गया है!');
-    } catch (e) {
-      console.warn('Native share image failed, falling back:', e);
-      handleCopy();
+    } catch (e: any) {
+      // AbortError is triggered when user dismisses the system dialog; ignore quietly
+      if (e?.name !== 'AbortError') {
+        console.warn('Native share dialog error:', e);
+        handleCopy();
+      }
     } finally {
-      setIsGeneratingImage(false);
+      setIsSharing(false);
     }
+  };
+
+  /**
+   * Direct WhatsApp Web / Mobile share link
+   */
+  const handleWhatsAppShare = () => {
+    triggerHaptic('light');
+    const text = encodeURIComponent(getShareText());
+    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
 
   const isCurrentLight = cardTheme === 'ivory';
@@ -613,38 +654,73 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({
       </div>
 
       {/* Share Actions Footer */}
-      <div className="w-full p-4 border-t border-neutral-800 bg-neutral-900/90 shrink-0">
-        <div className="max-w-sm mx-auto grid grid-cols-3 gap-2">
-          {/* Copy Text */}
-          <button
-            onClick={handleCopy}
-            className="py-2.5 px-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-semibold flex flex-col items-center justify-center space-y-1 transition-all font-hindi border border-neutral-700"
-          >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-            <span className="text-[11px]">{copied ? 'कॉपी हुआ' : 'टेक्स्ट कॉपी'}</span>
-          </button>
+      <div className="w-full p-4 border-t border-neutral-800 bg-neutral-900/95 shrink-0 shadow-xl">
+        <div className="max-w-md mx-auto space-y-2.5">
+          {/* Primary Action: Share System Dialog (When Web Share API is available) */}
+          {isShareSupported ? (
+            <button
+              onClick={handleShareSystemDialog}
+              disabled={isSharing || isGeneratingImage}
+              className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-neutral-950 font-bold text-sm flex items-center justify-center space-x-2.5 shadow-lg shadow-amber-500/25 active:scale-[0.98] transition-all font-hindi disabled:opacity-75 disabled:cursor-not-allowed"
+            >
+              {isSharing || isGeneratingImage ? (
+                <div className="w-4 h-4 border-2 border-neutral-950 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Share2 className="w-4.5 h-4.5 stroke-[2.5]" />
+              )}
+              <div className="flex flex-col items-center">
+                <span>सिस्टम शेयर डायलॉग (Share System Dialog)</span>
+                <span className="text-[10px] font-normal text-neutral-900/80 -mt-0.5">
+                  WhatsApp, Instagram, Telegram व अन्य ऐप्स में साझा करें
+                </span>
+              </div>
+            </button>
+          ) : (
+            <button
+              onClick={handleDownloadImage}
+              disabled={isGeneratingImage}
+              className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-bold text-sm flex items-center justify-center space-x-2 shadow-lg shadow-amber-500/25 active:scale-[0.98] transition-all font-hindi disabled:opacity-75"
+            >
+              {isGeneratingImage ? (
+                <div className="w-4 h-4 border-2 border-neutral-950 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Download className="w-4.5 h-4.5 stroke-[2.5]" />
+              )}
+              <span>सुंदर इमेज कार्ड डाउनलोड करें (Download Card)</span>
+            </button>
+          )}
 
-          {/* Download Image */}
-          <button
-            onClick={handleDownloadImage}
-            disabled={isGeneratingImage}
-            className="py-2.5 px-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-amber-300 text-xs font-semibold flex flex-col items-center justify-center space-y-1 transition-all font-hindi border border-amber-500/30"
-          >
-            <Download className="w-4 h-4 text-amber-400" />
-            <span className="text-[11px]">इमेज सेव</span>
-          </button>
+          {/* Secondary Actions Row */}
+          <div className="grid grid-cols-3 gap-2">
+            {/* Copy Shloka Text */}
+            <button
+              onClick={handleCopy}
+              className="py-2.5 px-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all font-hindi border border-neutral-700 active:scale-95"
+            >
+              {copied ? <Check className="w-4 h-4 text-emerald-400 shrink-0" /> : <Copy className="w-4 h-4 text-neutral-300 shrink-0" />}
+              <span className="text-[11px] truncate">{copied ? 'कॉपी हुआ!' : 'टेक्स्ट कॉपी'}</span>
+            </button>
 
-          {/* Share Image & Link */}
-          <button
-            onClick={handleShareImageAndLink}
-            disabled={isGeneratingImage}
-            className="py-2.5 px-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 text-xs font-bold flex flex-col items-center justify-center space-y-1 transition-all font-hindi shadow-md shadow-amber-500/20 active:scale-95"
-          >
-            <Share2 className="w-4 h-4" />
-            <span className="text-[11px] font-bold">
-              {isGeneratingImage ? 'तैयार...' : 'इमेज + लिंक'}
-            </span>
-          </button>
+            {/* Save Card Image (Available in both modes) */}
+            <button
+              onClick={handleDownloadImage}
+              disabled={isGeneratingImage || isSharing}
+              className="py-2.5 px-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-amber-300 text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all font-hindi border border-amber-500/30 active:scale-95 disabled:opacity-60"
+            >
+              <Download className="w-4 h-4 text-amber-400 shrink-0" />
+              <span className="text-[11px] truncate">इमेज सेव</span>
+            </button>
+
+            {/* Direct WhatsApp Share */}
+            <button
+              onClick={handleWhatsAppShare}
+              className="py-2.5 px-2 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/70 text-emerald-300 text-xs font-semibold flex items-center justify-center space-x-1.5 transition-all font-hindi border border-emerald-600/40 active:scale-95"
+              title="WhatsApp पर भेजें"
+            >
+              <Share2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="text-[11px] truncate">WhatsApp</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
