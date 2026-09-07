@@ -120,18 +120,25 @@ class AdMobService {
 
     try {
       if (this.isNative()) {
-        await AdMob.initialize({
-          testingDevices: this.config.isTesting ? ['2077ef9a63d2b398840261c8221a0c9b'] : undefined,
-          initializeForTesting: this.config.isTesting,
-        });
-
-        this.setupNativeEventListeners();
-        // Pre-load initial interstitial and rewarded ads in background
-        this.preloadInterstitial();
-        this.preloadRewarded();
-        // Automatically show the adaptive bottom banner
-        this.showBanner(56);
-        console.log('[AdMob] Native SDK initialized & banner auto-displayed for Android AAB');
+        try {
+          await AdMob.initialize({
+            initializeForTesting: this.config.isTesting,
+          });
+          this.setupNativeEventListeners();
+          // Delay initial banner & preloads to allow Android window to stabilize
+          setTimeout(() => {
+            try {
+              this.preloadInterstitial();
+              this.preloadRewarded();
+              this.showBanner(56);
+            } catch (adLoadErr) {
+              console.warn('[AdMob] Deferred load caught:', adLoadErr);
+            }
+          }, 1500);
+          console.log('[AdMob] Native SDK initialized safely for Android');
+        } catch (nativeInitErr) {
+          console.warn('[AdMob] Native initialize caught non-fatal error:', nativeInitErr);
+        }
       } else if (this.hasCustomWebViewBridge()) {
         try {
           (window as any).AndroidAdMob.init?.(this.config.androidAppId);

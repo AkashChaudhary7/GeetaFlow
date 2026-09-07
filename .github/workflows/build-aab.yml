@@ -1,8 +1,7 @@
 name: Build & Sign Android App Bundle (AAB)
 
+# Automatic build on push is paused. Trigger manually via the Actions tab -> Run workflow.
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
