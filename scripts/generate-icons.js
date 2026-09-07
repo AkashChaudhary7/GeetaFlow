@@ -2,61 +2,56 @@ import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
-const svgPath = path.resolve('public/icon.svg');
-const svgBuffer = fs.readFileSync(svgPath);
+const standardSvgPath = path.resolve('public/icon.svg');
+const maskableSvgPath = path.resolve('public/icon-maskable.svg');
+
+const standardSvgBuffer = fs.readFileSync(standardSvgPath);
+const maskableSvgBuffer = fs.existsSync(maskableSvgPath) 
+  ? fs.readFileSync(maskableSvgPath) 
+  : standardSvgBuffer;
 
 async function generate() {
-  console.log('Generating PWA icons from SVG...');
+  console.log('Generating high-res Sacred Chariot PWA icons...');
 
-  // 192x192
-  await sharp(svgBuffer)
+  // 1. Standard PWA 192x192 PNG (purpose: any)
+  await sharp(standardSvgBuffer)
     .resize(192, 192)
-    .png()
+    .png({ quality: 100, compressionLevel: 9 })
     .toFile(path.resolve('public/pwa-192x192.png'));
-  console.log('Generated pwa-192x192.png');
+  console.log('✓ Generated public/pwa-192x192.png (192x192)');
 
-  // 512x512
-  await sharp(svgBuffer)
+  // 2. Standard PWA 512x512 PNG (purpose: any)
+  await sharp(standardSvgBuffer)
     .resize(512, 512)
-    .png()
+    .png({ quality: 100, compressionLevel: 9 })
     .toFile(path.resolve('public/pwa-512x512.png'));
-  console.log('Generated pwa-512x512.png');
+  console.log('✓ Generated public/pwa-512x512.png (512x512)');
 
-  // Apple touch icon (180x180)
-  await sharp(svgBuffer)
+  // 3. Apple Touch Icon 180x180 PNG
+  await sharp(standardSvgBuffer)
     .resize(180, 180)
-    .png()
+    .png({ quality: 100, compressionLevel: 9 })
     .toFile(path.resolve('public/apple-touch-icon.png'));
-  console.log('Generated apple-touch-icon.png');
+  console.log('✓ Generated public/apple-touch-icon.png (180x180)');
 
-  // Maskable 512x512: The safe zone is 80% (padding of 10% on all sides) with full-bleed background
-  const innerIconBuffer = await sharp(svgBuffer)
-    .resize(410, 410)
-    .png()
-    .toBuffer();
-
-  await sharp({
-    create: {
-      width: 512,
-      height: 512,
-      channels: 4,
-      background: { r: 9, g: 9, b: 11, alpha: 1 }
-    }
-  })
-    .composite([{ input: innerIconBuffer, top: 51, left: 51 }])
-    .png()
+  // 4. W3C Maskable Icon 512x512 PNG (purpose: maskable) with full-bleed cosmic background and 80% safe-zone centering
+  await sharp(maskableSvgBuffer)
+    .resize(512, 512)
+    .png({ quality: 100, compressionLevel: 9 })
     .toFile(path.resolve('public/pwa-maskable-512x512.png'));
-  console.log('Generated pwa-maskable-512x512.png');
+  console.log('✓ Generated public/pwa-maskable-512x512.png (512x512 Maskable)');
 
-  // Favicon 64x64 PNG
-  await sharp(svgBuffer)
+  // 5. Favicon 64x64 PNG
+  await sharp(standardSvgBuffer)
     .resize(64, 64)
-    .png()
+    .png({ quality: 100 })
     .toFile(path.resolve('public/favicon.png'));
-  console.log('Generated favicon.png');
+  console.log('✓ Generated public/favicon.png (64x64)');
 }
 
-generate().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+generate()
+  .then(() => console.log('All GeetaFlow PWA icons generated successfully!'))
+  .catch(err => {
+    console.error('Error generating icons:', err);
+    process.exit(1);
+  });

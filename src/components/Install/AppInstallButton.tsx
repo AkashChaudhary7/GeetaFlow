@@ -90,9 +90,12 @@ export const AppInstallButton: React.FC<AppInstallButtonProps> = ({
       <div className={`p-4 rounded-2xl bg-gradient-to-br from-amber-950/40 to-neutral-900 border border-amber-500/30 text-left space-y-2.5 shadow-md ${className}`}>
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-              <Smartphone className="w-5 h-5" />
-            </div>
+            <img 
+              src="/icon.svg" 
+              alt="GeetaFlow Sacred Chariot" 
+              className="w-11 h-11 rounded-xl shadow-md border border-amber-500/30 object-contain p-0.5 bg-neutral-950 shrink-0" 
+              referrerPolicy="no-referrer"
+            />
             <div>
               <h4 className="text-sm font-bold text-amber-200 font-hindi">
                 GeetaFlow ऐप इंस्टॉल करें
@@ -125,8 +128,13 @@ const IOSInstallModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-neutral-950/80 backdrop-blur-sm animate-fadeIn">
       <div className="relative w-full max-w-sm rounded-3xl bg-neutral-900 border border-neutral-800 p-5 text-neutral-100 space-y-4 shadow-2xl">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Smartphone className="w-5 h-5 text-amber-400" />
+          <div className="flex items-center space-x-2.5">
+            <img 
+              src="/icon.svg" 
+              alt="GeetaFlow Icon" 
+              className="w-6 h-6 rounded-lg object-contain" 
+              referrerPolicy="no-referrer"
+            />
             <h3 className="font-bold text-sm font-hindi text-amber-200">
               iPhone / iPad पर इंस्टॉल करें
             </h3>
