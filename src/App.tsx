@@ -19,6 +19,7 @@ import { DownloadVideoModal } from './components/Feed/DownloadVideoModal';
 import { BackgroundVideoRenderer } from './components/Feed/BackgroundVideoRenderer';
 import { PrivacyPolicyModal } from './components/Legal/PrivacyPolicyModal';
 import { AdMobBannerView } from './components/Common/AdMobBannerView';
+import { OfflineIndicator } from './components/Common/OfflineIndicator';
 import { admobService } from './services/admob';
 
 const PREFS_STORAGE_KEY = 'geetaflow_user_preferences_v1';
@@ -460,6 +461,9 @@ export function App() {
         defaultTab={privacyPolicyTab}
         isLight={isLight}
       />
+
+      {/* Offline Status Connectivity Banner */}
+      <OfflineIndicator />
 
     </div>
   );

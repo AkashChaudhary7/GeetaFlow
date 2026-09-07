@@ -1,7 +1,0 @@
-{
-  "name": "GeetaFlow",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "custom"
-}
